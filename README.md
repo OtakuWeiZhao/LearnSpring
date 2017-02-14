@@ -1,5 +1,5 @@
 # LearnSpring
-***** Spring的Bean有哪些作用域(scope)
+##### Spring的Bean有哪些作用域(scope)
 1. singleton:SpringIoc容器只会创建该Bean的唯一实例
 2. prototype:每次请求都会创建一个实例
 3. request:每次HTTP请求都会产生一个新的Bean该作用域仅在基于Web的
