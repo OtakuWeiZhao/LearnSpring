@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 在顶级<beans/>元素中,可以为所有<bean>指定初始化回调方法以及指定销毁回调方法 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
@@ -8,7 +9,8 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd"
+		default-init-method="init" default-destroy-method="destroy">
 	<!-- 构造器实例化 -->
 	<bean id="calendarObj1" class="java.util.GregorianCalendar"></bean>
 	<!-- 静态工厂方法实例化 -->
@@ -16,5 +18,11 @@
 	<!-- 实例工厂方法实例化 -->
 	<bean id="calendarObj3" class="java.util.GregorianCalendar"></bean>
 	<bean id="dateObj" factory-bean="calendarObj3" factory-method="getTime"></bean>
-	<bean id="exampleBean" class="dao.ExampleBean" scope="prototype"></bean>
+	<bean id="exampleBean" class="dao.ExampleBean" 
+	scope="singleton" init-method="init" destroy-method="destroy"
+	lazy-init="true"
+	depends-on="bean1"></bean>
+	<!-- 设置lazy-init="true"之后,对象不使用不创建,也可以在顶级<beans/>元素中设置延迟实例化特性 -->
+	<!-- depends-on是依赖关系属性 -->
+	<bean id="bean1" class="dao.ExampleBean1" lazy-init="true"></bean>
 </beans>

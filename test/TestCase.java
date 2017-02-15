@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import dao.ExampleBean;
@@ -60,10 +61,12 @@ public class TestCase {
 		// 若修改scope属性为(原型模式)prototype,则控制台输出如下,
 		// 创建的bean不再是单例模式了
 		System.out.println(bean1 == bean2);
+		// 关闭Spring容器, 注意AbstractApplicationContext类型定义了 close()方法
+		AbstractApplicationContext ctx = (AbstractApplicationContext) ac;
+		// 控制台没有输出"销毁ExampleBean对象"的结果,因为在配置文件中destroy-method
+		// 属性仅仅对单例模式起作用,在prototype模式下没有意义
+		// 由于ExampleBean依赖于ExampleBean1,因此在创建ExampleBean的同时,
+		// 也创建了ExampleBean1
+		ctx.close();
 	}
-	/**
-	 * 实例化ExampleBean
-	 * 实例化ExampleBean
-	 * false
-	 */
 }
